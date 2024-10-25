@@ -1,0 +1,52 @@
+name: Pulumi Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      createInstance:
+        description: 'Set to true to create the EC2 instance, false to destroy it'
+        required: true
+        default: 'true'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Pulumi
+        uses: pulumi/actions@v3
+        with:
+          version: 'latest'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Select Pulumi Stack
+        run: pulumi stack select dev
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+      - name: Set Pulumi Config
+        run: pulumi config set createInstance ${{ github.event.inputs.createInstance }}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+      - name: Pulumi Up
+        run: pulumi up --yes
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
