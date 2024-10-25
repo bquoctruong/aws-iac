@@ -1,33 +1,33 @@
-name: Pulumi Deploy
+name: Terraform Deployment
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
-      createInstance:
-        description: 'Set to true to create the EC2 instance, false to destroy it'
-        required: true
+      create_instance:
+        description: 'Set to "true" to create the EC2 instance, "false" to destroy it'
+        required: false
         default: 'true'
 
 jobs:
-  deploy:
+  terraform:
+    name: Terraform Apply
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: environments/dev
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          node-version: '14.x'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Install Pulumi
-        uses: pulumi/actions@v3
-        with:
-          version: 'latest'
+          terraform_version: 1.5.6
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -36,17 +36,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Select Pulumi Stack
-        run: pulumi stack select dev
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      - name: Set create_instance Variable
+        run: |
+          echo "create_instance = \"${{ github.event.inputs.create_instance }}\"" > terraform.auto.tfvars
 
-      - name: Set Pulumi Config
-        run: pulumi config set createInstance ${{ github.event.inputs.createInstance }}
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      - name: Terraform Init
+        run: terraform init
 
-      - name: Pulumi Up
-        run: pulumi up --yes
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
