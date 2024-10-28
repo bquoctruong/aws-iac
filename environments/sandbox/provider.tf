@@ -1,4 +1,4 @@
-# environments/dev/provider.tf
+# environments/sandbox/provider.tf
 
 # Specify the AWS provider
 provider "aws" {

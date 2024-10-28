@@ -1,4 +1,4 @@
-# environments/dev/iam.tf
+# environments/sandbox/iam.tf
 
 module "iam_user" {
   source = "../../modules/iam_user"

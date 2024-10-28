@@ -1,4 +1,4 @@
-# environments/dev/s3.tf
+# environments/sandbox/s3.tf
 
 module "s3_buckets" {
   source = "../../modules/s3_bucket"

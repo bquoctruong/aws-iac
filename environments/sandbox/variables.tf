@@ -1,4 +1,4 @@
-# environments/dev/variables.tf
+# environments/sandbox/variables.tf
 
 variable "aws_region" {
   description = "AWS region to deploy resources in"

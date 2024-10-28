@@ -1,4 +1,4 @@
-# environments/dev/terraform.tfvars
+# environments/sandbox/terraform.tfvars
 
 aws_region      = ${{ secrets.AWS_REGION }}
 instance_type   = "t2.micro"

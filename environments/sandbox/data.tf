@@ -1,4 +1,4 @@
-# environments/dev/data.tf
+# environments/sandbox/data.tf
 
 # Fetch the latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux" {
