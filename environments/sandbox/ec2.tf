@@ -1,4 +1,4 @@
-# environments/dev/main.tf
+# environments/dev/ec2.tf
 
 terraform {
   required_version = ">= 1.5.6"
