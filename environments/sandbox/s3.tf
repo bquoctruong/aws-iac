@@ -1,7 +1,7 @@
 # environments/sandbox/s3.tf
 
 module "s3_buckets" {
-  source = "../../modules/s3_bucket"
+  source = "../../modules/s3"
 
   for_each = var.s3_bucket_configs
 

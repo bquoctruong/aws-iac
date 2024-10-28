@@ -1,4 +1,4 @@
-# modules/s3_bucket/main.tf
+# modules/s3/main.tf
 
 # Create an S3 bucket
 resource "aws_s3_bucket" "bucket" {

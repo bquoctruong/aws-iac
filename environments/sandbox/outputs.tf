@@ -3,13 +3,13 @@
 output "instance_public_ip" {
   value       = module.ec2_instance.instance_public_ip
   description = "Public IP of the EC2 instance"
-  condition   = var.create_instance
+  # condition   = var.create_instance
 }
 
 output "instance_public_dns" {
   value       = module.ec2_instance.instance_public_dns
   description = "Public DNS of the EC2 instance"
-  condition   = var.create_instance
+  # condition   = var.create_instance
 }
 
 # IAM user outputs
@@ -21,14 +21,14 @@ output "iam_user_name" {
 output "iam_access_key_id" {
   value       = module.iam_user.access_key_id
   description = "Access Key ID for the IAM user"
-  condition   = var.create_access_key
+  # condition   = var.create_access_key
 }
 
 output "iam_secret_access_key" {
   value       = module.iam_user.secret_access_key
   description = "Secret Access Key for the IAM user"
   sensitive   = true
-  condition   = var.create_access_key
+  # condition   = var.create_access_key
 }
 
 # S3 bucket outputs
