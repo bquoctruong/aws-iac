@@ -1,24 +1,24 @@
 # environments/dev/terraform.tfvars
 
-aws_region      = "us-west-2"
+aws_region      = ${{ secrets.AWS_REGION }}
 instance_type   = "t2.micro"
 key_name        = "your-key-pair-name"  # Replace with your key pair name
 create_instance = true
 
 # IAM user configuration
-iam_user_name    = "dev_user"  # Replace as needed
+iam_user_name    = ${{ variables.AWS_IAM_USER_NAME }}
 create_access_key = false
 
 # S3 bucket configurations
 s3_bucket_configs = {
-  "s3_bucket_1" = {
-    bucket_name       = "my-dev-s3-bucket-unique-name-1"
+  ${{ variables.AWS_S3_TF }} = {
+    bucket_name       = ${{ variables.AWS_S3_TF }}
     acl               = "private"
     enable_versioning = false
     tags              = { Project = "ProjectA" }
   }
-  "s3_bucket_2" = {
-    bucket_name       = "my-dev-s3-bucket-unique-name-2"
+  ${{ variables.AWS_S3_DEMO }} = {
+    bucket_name       = ${{ variables.AWS_S3_DEMO }}
     acl               = "public-read"
     enable_versioning = true
     tags              = { Project = "ProjectB" }

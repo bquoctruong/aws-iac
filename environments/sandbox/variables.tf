@@ -9,7 +9,7 @@ variable "aws_region" {
 variable "iam_user_name" {
   description = "Name of the IAM user"
   type        = string
-  default     = "example_user"  # Replace as needed
+  default     = ${{ variables.AWS_IAM_USER_NAME }}
 }
 
 variable "iam_policy_arns" {
