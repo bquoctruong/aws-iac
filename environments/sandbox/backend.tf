@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = ${{ variables.AWS_S3_TF }}
+    bucket         = ${{ env.TF_S3_STATE }}
     key            = "terraform-ec2-instance/dev/terraform.tfstate"
-    region         = ${{ secrets.AWS_REGION }}
+    region         = ${{ env.TF_REGION }}
     dynamodb_table = "your-terraform-lock-table"
     encrypt        = true
   }

@@ -14,6 +14,11 @@ on:
         description: 'Set to "true" to create access keys for the IAM user'
         required: false
         default: 'false'
+env:
+  TF_REGION: ${{ secrets.AWS_REGION }}
+  TF_S3_STATE: ${{ vars.AWS_S3_TF }}
+  TF_S3_DEMO: ${{ vars.AWS_S3_DEMO }}
+  TF_IAM_USER_NAME: ${{ vars.AWS_IAM_USER_NAME }}
 
 jobs:
   terraform:
@@ -29,7 +34,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.6
 
