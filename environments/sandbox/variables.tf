@@ -9,7 +9,6 @@ variable "aws_region" {
 variable "iam_user_name" {
   description = "Name of the IAM user"
   type        = string
-  default     = ${{ variables.AWS_IAM_USER_NAME }}
 }
 
 variable "iam_policy_arns" {
@@ -51,6 +50,24 @@ variable "create_instance" {
 variable "s3_bucket_names" {
   description = "List of S3 bucket names"
   type        = list(string)
+}
+
+variable "s3_state" {
+  description = "s3 bucket for state"
+  type        = string
+  default     = ""
+}
+
+variable "s3_demo" {
+  description = "s3 bucket for state"
+  type        = string
+  default     = ""
+}
+
+variable "key_name" {
+  description = "Key pair name for SSH access"
+  type        = string
+  default     = ""
 }
 
 variable "s3_acl" {

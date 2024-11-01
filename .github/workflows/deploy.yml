@@ -14,11 +14,6 @@ on:
         description: 'Set to "true" to create access keys for the IAM user'
         required: false
         default: 'false'
-env:
-  TF_REGION: ${{ secrets.AWS_REGION }}
-  TF_S3_STATE: ${{ vars.AWS_S3_TF }}
-  TF_S3_DEMO: ${{ vars.AWS_S3_DEMO }}
-  TF_IAM_USER_NAME: ${{ vars.AWS_IAM_USER_NAME }}
 
 jobs:
   terraform:
@@ -54,6 +49,11 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
+        env:
+          TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
+          TF_VAR_s3_state: ${{ vars.AWS_S3_TF }}
+          TF_VAR_s3_demo: ${{ vars.AWS_S3_DEMO }}
+          TF_VAR_iam_user_name: ${{ vars.AWS_IAM_USER_NAME }}
         run: terraform apply -auto-approve
 
       - name: Output IAM Access Key (Sensitive)

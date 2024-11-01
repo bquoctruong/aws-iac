@@ -11,8 +11,8 @@ create_access_key = false
 
 # S3 bucket configurations
 s3_bucket_configs = {
-  ${{ env.TF_S3_STATE }} = {
-    bucket_name       = ${{ env.TF_S3_STATE }}
+  vars.s3_state = {
+    bucket_name       = vars.s3_state
     acl               = "private"
     enable_versioning = false
     tags              = { Project = "ProjectA" }
