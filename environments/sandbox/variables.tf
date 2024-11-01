@@ -64,12 +64,6 @@ variable "s3_demo" {
   default     = ""
 }
 
-variable "key_name" {
-  description = "Key pair name for SSH access"
-  type        = string
-  default     = ""
-}
-
 variable "s3_acl" {
   description = "Canned ACL to apply to the S3 buckets"
   type        = string
