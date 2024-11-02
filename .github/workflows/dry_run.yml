@@ -1,0 +1,65 @@
+name: Terraform Dry Rum
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      create_instance:
+        description: 'Set to "true" to create the EC2 instance, "false" to destroy it'
+        required: false
+        default: 'true'
+      create_access_key:
+        description: 'Set to "true" to create access keys for the IAM user'
+        required: false
+        default: 'false'
+
+jobs:
+  terraform:
+    name: Terraform Plan --dry-run
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: environments/sandbox
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.6
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set Terraform Variables
+        run: |
+          echo "create_instance = \"${{ github.event.inputs.create_instance }}\"" > terraform.auto.tfvars
+          echo "create_access_key = \"${{ github.event.inputs.create_access_key }}\"" >> terraform.auto.tfvars
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        env:
+          TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
+          TF_VAR_s3_state: ${{ vars.AWS_S3_TF }}
+          TF_VAR_s3_demo: ${{ vars.AWS_S3_DEMO }}
+          TF_VAR_iam_user_name: ${{ vars.AWS_IAM_USER_NAME }}
+        run: terraform plan -auto-approve
+
+      - name: Output IAM Access Key (Sensitive)
+        if: ${{ github.event.inputs.create_access_key == 'true' }}
+        run: |
+          terraform output -json iam_access_key_id > access_key.json
+          terraform output -json iam_secret_access_key > secret_key.json
+        env:
+          TF_IN_AUTOMATION: true  # Suppress sensitive output
+
+      # Handle sensitive outputs securely, e.g., store in GitHub Actions secrets or external vaults
