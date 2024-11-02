@@ -40,13 +40,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Set Terraform Variables
+      - name: Create Backend Config
         run: |
-          echo "create_instance = \"${{ github.event.inputs.create_instance }}\"" > terraform.auto.tfvars
-          echo "create_access_key = \"${{ github.event.inputs.create_access_key }}\"" >> terraform.auto.tfvars
+          echo 'bucket         = "${{ vars.AWS_S3_TF }}"' > backend-config.hcl
+          echo 'region         = "${{ secrets.AWS_REGION }}"' >> backend-config.hcl
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config=backend-config.hcl
 
       - name: Terraform Apply
         env:
