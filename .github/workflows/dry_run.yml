@@ -37,22 +37,43 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Set Terraform Variables
+        
+      - name: Generate Backend Config
         run: |
-          echo "create_instance = \"${{ github.event.inputs.create_instance }}\"" > terraform.auto.tfvars
-          echo "create_access_key = \"${{ github.event.inputs.create_access_key }}\"" >> terraform.auto.tfvars
-
+          echo 'bucket         = "${{ secrets.S3_BACKEND_BUCKET }}"' > backend-config.hcl
+          echo 'key            = "path/to/terraform.tfstate"' >> backend-config.hcl
+          echo 'region         = "us-west-1"' >> backend-config.hcl
+          echo 'dynamodb_table = "${{ secrets.DYNAMODB_TABLE }}"' >> backend-config.hcl
+          echo 'encrypt        = true' >> backend-config.hcl
+    
+      - name: Generate Sensitive Variables File
+        run: |
+          echo 's3_bucket_configs = {' > sensitive.tfvars
+          echo '  "s3_bucket_1" = {' >> sensitive.tfvars
+          echo '    bucket_name       = "${{ secrets.S3_BUCKET_NAME_1 }}"' >> sensitive.tfvars
+          echo '    acl               = "private"' >> sensitive.tfvars
+          echo '    enable_versioning = false' >> sensitive.tfvars
+          echo '    tags              = { Project = "ProjectA" }' >> sensitive.tfvars
+          echo '  }' >> sensitive.tfvars
+          echo '  "s3_bucket_2" = {' >> sensitive.tfvars
+          echo '    bucket_name       = "${{ secrets.S3_BUCKET_NAME_2 }}"' >> sensitive.tfvars
+          echo '    acl               = "private"' >> sensitive.tfvars
+          echo '    enable_versioning = false' >> sensitive.tfvars
+          echo '    tags              = { Project = "ProjectB" }' >> sensitive.tfvars
+          echo '  }' >> sensitive.tfvars
+          echo '}' >> sensitive.tfvars
+    
       - name: Terraform Init
-        run: terraform init
-
+        run: terraform init -backend-config=backend-config.hcl
+  
       - name: Terraform Apply
-        env:
-          TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
-          TF_VAR_s3_state: ${{ vars.AWS_S3_TF }}
-          TF_VAR_s3_demo: ${{ vars.AWS_S3_DEMO }}
-          TF_VAR_iam_user_name: ${{ vars.AWS_IAM_USER_NAME }}
-        run: terraform plan -auto-approve
+        run: terraform plan -var-file="sensitive.tfvars" -auto-approve
+  
+      - name: Clean Up
+        if: always()
+        run: |
+          rm -f backend-config.hcl
+          rm -f sensitive.tfvars
 
       - name: Output IAM Access Key (Sensitive)
         if: ${{ github.event.inputs.create_access_key == 'true' }}
