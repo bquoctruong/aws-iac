@@ -1,4 +1,4 @@
-name: Terraform Dry Rum
+name: Terraform Dry Run
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
         
       - name: Generate Backend Config
         run: |
-          echo 'bucket         = "${{ secrets.S3_BACKEND_BUCKET }}"' > backend-config.hcl
+          echo 'bucket         = "${{ vars.AWS_S3_TF }}"' > backend-config.hcl
           echo 'key            = "path/to/terraform.tfstate"' >> backend-config.hcl
           echo 'region         = "us-west-1"' >> backend-config.hcl
           echo 'dynamodb_table = "${{ secrets.DYNAMODB_TABLE }}"' >> backend-config.hcl
@@ -49,15 +49,15 @@ jobs:
       - name: Generate Sensitive Variables File
         run: |
           echo 's3_bucket_configs = {' > sensitive.tfvars
-          echo '  "s3_bucket_1" = {' >> sensitive.tfvars
-          echo '    bucket_name       = "${{ secrets.S3_BUCKET_NAME_1 }}"' >> sensitive.tfvars
+          echo '  "${{ vars.AWS_S3_TF }}" = {' >> sensitive.tfvars
+          echo '    bucket_name       = "${{ vars.AWS_S3_TF }}"' >> sensitive.tfvars
           echo '    acl               = "private"' >> sensitive.tfvars
           echo '    enable_versioning = false' >> sensitive.tfvars
           echo '    tags              = { Project = "ProjectA" }' >> sensitive.tfvars
           echo '  }' >> sensitive.tfvars
-          echo '  "s3_bucket_2" = {' >> sensitive.tfvars
-          echo '    bucket_name       = "${{ secrets.S3_BUCKET_NAME_2 }}"' >> sensitive.tfvars
-          echo '    acl               = "private"' >> sensitive.tfvars
+          echo '  "${{ vars.AWS_S3_DEMO }}" = {' >> sensitive.tfvars
+          echo '    bucket_name       = "${{ vars.AWS_S3_DEMO }}"' >> sensitive.tfvars
+          echo '    acl               = "public"' >> sensitive.tfvars
           echo '    enable_versioning = false' >> sensitive.tfvars
           echo '    tags              = { Project = "ProjectB" }' >> sensitive.tfvars
           echo '  }' >> sensitive.tfvars
