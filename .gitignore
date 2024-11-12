@@ -7,6 +7,7 @@ backend-config.hcl
 # Ignore local Terraform state files
 terraform.tfstate
 terraform.tfstate.*
+terraform.tfvars
 
 # Ignore crash logs
 crash.log
