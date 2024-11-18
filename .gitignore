@@ -28,3 +28,6 @@ terraform.tfplan
 
 # Ignore .DS_Store (macOS)
 .DS_Store
+
+# output.json from aws
+output.json
