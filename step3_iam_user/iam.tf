@@ -10,11 +10,11 @@ resource "aws_iam_access_key" "iam_user_github" {
 }
 
 data "aws_iam_policy_document" "iam_user_github_pd_allow" {
-  statement {
-    effect    = "Allow"
-    actions   = ["ec2:Describe*"]
-    resources = ["*"]
-  }
+  #   statement {
+  #     effect    = "Allow"
+  #     actions   = ["ec2:Describe*"]
+  #     resources = ["*"]
+  #   }
   # assumerole
   statement {
     actions = ["sts:AssumeRole"]
