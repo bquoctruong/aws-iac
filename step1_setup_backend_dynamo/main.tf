@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_s3_bucket" "s3_terraform" {
   bucket = var.backend_bucket_name
-  
+
   versioning {
     enabled = true
   }
@@ -34,11 +34,11 @@ resource "aws_s3_bucket_ownership_controls" "s3_boc" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_tf_lock_table" {
-  name         = var.dynamodb_table_name
+  name           = var.dynamodb_table_name
   billing_mode   = "PROVISIONED"
-  read_capacity  = 1  # Adjust within Free Tier limits
-  write_capacity = 1  # Adjust within Free Tier limits
-  hash_key     = "LockID"
+  read_capacity  = 1 # Adjust within Free Tier limits
+  write_capacity = 1 # Adjust within Free Tier limits
+  hash_key       = "LockID"
 
   attribute {
     name = "LockID"
