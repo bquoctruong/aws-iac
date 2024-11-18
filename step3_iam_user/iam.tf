@@ -1,8 +1,8 @@
 # environments/sandbox/iam.tf
 
 resource "aws_iam_user" "iam_user_github" {
-name  = var.iam_name
-tags   = var.tag
+  name = var.iam_name
+  tags = var.tag
 }
 
 resource "aws_iam_access_key" "iam_user_github" {
@@ -15,12 +15,12 @@ data "aws_iam_policy_document" "iam_user_github_pd_allow" {
     actions   = ["ec2:Describe*"]
     resources = ["*"]
   }
-# assumerole
-   statement {
-       actions   = ["sts:AssumeRole"]
-       principals {
-            type    = "Service"
-            identifiers = ["trustedadvisor.amazonaws.com", "support.amazonaws.com", "lambda.amazonaws.com"]
+  # assumerole
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["trustedadvisor.amazonaws.com", "support.amazonaws.com", "lambda.amazonaws.com"]
     }
   }
 }

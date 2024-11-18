@@ -23,11 +23,11 @@ variable "environment" {
 }
 
 variable "iam_name" {
-default    ="iam_user_name"
-type        = string
+  default = "iam_user_name"
+  type    = string
 }
 
 variable "tag" {
-type      = map(string)
+  type = map(string)
 }
 
