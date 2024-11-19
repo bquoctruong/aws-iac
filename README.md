@@ -17,3 +17,21 @@ Repository that controls all of my AWS Infrastructure utilizing Terraform and Gi
 
 - `instance_public_ip`
 - `instance_public_dns`
+
+## Useful commands
+
+`tofu fmt */*.tf`
+
+Properly formats .tf files
+
+`aws iam get-account-authorization-details > output.json`
+
+Outputs current/existing iam user details in order to transpose details on terraform
+
+`tofu init -backend-config=backend-config.hcl`
+
+Initializes backend with .hcl; useful for init without revealing sensitive vars
+
+`tofu import <RESOURCE>.<RESOURCE_NAME> <EXISTING_RESOURCE_NAME>`
+
+imports existing resource into terraform approved resource
