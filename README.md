@@ -39,5 +39,24 @@ imports existing resource into terraform approved resource
 ## TODO
 
 - All AWS Always Free Tier Resources
+  - Lambda
+  - SNS
+  - CloudWatch
+  - CloudFront
+  - Cognito
+  - SQS
+  - SWF
+  - Glue
+  - KMS
+  - Step
+  - Storage
+  - X-Ray
+  - CodeArtifact
+  - CloudTrail
+  - Prometheus
+  - SimpleDB
+  - Route53
+  - HealthLake
+  
 
 - Clamped down IAM user
