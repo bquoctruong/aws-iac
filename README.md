@@ -35,3 +35,9 @@ Initializes backend with .hcl; useful for init without revealing sensitive vars
 `tofu import <RESOURCE>.<RESOURCE_NAME> <EXISTING_RESOURCE_NAME>`
 
 imports existing resource into terraform approved resource
+
+## TODO
+
+- All AWS Always Free Tier Resources
+
+- Clamped down IAM user
