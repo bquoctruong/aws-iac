@@ -15,7 +15,7 @@ variable "iam_user_name" {
 variable "iam_policy_arns" {
   description = "List of IAM policy ARNs to attach to the user"
   type        = list(string)
-  default     = [
+  default = [
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess",
     "arn:aws:iam::aws:policy/AmazonElasticContainerRegistryPublicPowerUser",
     "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
@@ -90,7 +90,7 @@ variable "s3_bucket_configs" {
 variable "s3_tags" {
   description = "Common tags to apply to all S3 buckets"
   type        = map(string)
-  default     = {
+  default = {
     Env = "dev"
   }
 }

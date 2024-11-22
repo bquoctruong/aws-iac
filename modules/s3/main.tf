@@ -3,7 +3,10 @@
 # Create an S3 bucket
 resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name
-  acl    = var.acl
+
+  versioning {
+    enabled = true
+  }
 
   # Apply server-side encryption by default
   server_side_encryption_configuration {
@@ -15,6 +18,14 @@ resource "aws_s3_bucket" "bucket" {
   }
 
   tags = var.tags
+}
+
+resource "aws_s3_bucket_ownership_controls" "s3_boc" {
+  bucket = aws_s3_bucket.bucket.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
 }
 
 # Enable versioning (optional)

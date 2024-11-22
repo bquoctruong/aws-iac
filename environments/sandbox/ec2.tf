@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.16"  # Specify your desired version
+      version = "~> 5.16" # Specify your desired version
     }
   }
 }
@@ -22,7 +22,7 @@ module "ec2_instance" {
   instance_type       = var.instance_type
   key_name            = var.key_name
   create_instance     = var.create_instance
-  tags                = {
+  tags = {
     Name = "DevEC2Instance"
     Env  = "dev"
   }
