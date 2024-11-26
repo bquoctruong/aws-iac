@@ -60,3 +60,5 @@ imports existing resource into terraform approved resource
   
 
 - Clamped down IAM user
+
+- Reformat modules to be reusable as opposed to...whatever it is
