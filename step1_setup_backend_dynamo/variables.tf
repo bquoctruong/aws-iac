@@ -25,3 +25,7 @@ variable "environment" {
 variable "tag" {
   type = map(string)
 }
+
+variable "dynamodb_tag" {
+  type = map(string)
+}

@@ -12,8 +12,5 @@ resource "aws_dynamodb_table" "dynamodb_tf_lock_table" {
     type = "S"
   }
 
-  tags = {
-    Name = "Terraform Lock Table"
-    Env  = var.environment
-  }
+  tags = var.tags
 }
