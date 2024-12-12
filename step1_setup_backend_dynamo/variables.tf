@@ -21,3 +21,11 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "tag" {
+  type = map(string)
+}
+
+variable "dynamodb_tag" {
+  type = map(string)
+}
