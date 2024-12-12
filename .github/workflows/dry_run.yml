@@ -1,4 +1,4 @@
-name: Terraform Dry Rum
+name: Terraform Dry Run
 
 on:
   push:
@@ -40,10 +40,10 @@ jobs:
         
       - name: Generate Backend Config
         run: |
-          echo 'bucket         = "${{ secrets.S3_BACKEND_BUCKET }}"' > backend-config.hcl
-          echo 'key            = "path/to/terraform.tfstate"' >> backend-config.hcl
+          echo 'bucket         = "${{ vars.AWS_S3_TF }}"' > backend-config.hcl
+          echo 'key            = "${{ secrets.S3_PATH_TO_TF_STATE }}"' >> backend-config.hcl
           echo 'region         = "us-west-1"' >> backend-config.hcl
-          echo 'dynamodb_table = "${{ secrets.DYNAMODB_TABLE }}"' >> backend-config.hcl
+          echo 'dynamodb_table = "${{ secrets.AWS_DYNAMODB_TABLE_TF }}"' >> backend-config.hcl
           echo 'encrypt        = true' >> backend-config.hcl
     
       - name: Generate Sensitive Variables File
